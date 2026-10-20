@@ -1,5 +1,5 @@
 {
- "version": 3,
+ "version": 4,
  "refreshMinutes": 5,
  "screens": {
   "default": "lobby",
@@ -13,24 +13,28 @@
     "type": "slide",
     "duration": 12,
     "title": "FIRST VISIT FREE",
-    "body": "Open Play \u00b7 ages 0\u201312",
+    "body": "Open Play · ages 0–12",
     "bg": "#1f7a3a",
     "schedule": {
      "days": "0123456",
-     "from": "08:30",
-     "to": "23:00"
+     "from": "20:30",
+     "to": "23:00",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
     }
    },
    {
     "type": "slide",
     "duration": 10,
     "title": "Classes start on the hour",
-    "body": "Coaches welcome class kids \u00b7 Open Play kids head to the play area",
+    "body": "Coaches welcome class kids · Open Play kids head to the play area",
     "bg": "#0d4f8b",
     "schedule": {
      "days": "0123456",
-     "from": "08:30",
-     "to": "23:00"
+     "from": "20:30",
+     "to": "23:00",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
     }
    },
    {
@@ -41,18 +45,10 @@
     "bg": "#b5338a",
     "schedule": {
      "days": "0123456",
-     "from": "08:30",
-     "to": "23:00"
-    }
-   },
-   {
-    "type": "image",
-    "duration": 10,
-    "src": "media/sample.svg",
-    "schedule": {
-     "days": "0123456",
-     "from": "08:30",
-     "to": "23:00"
+     "from": "20:30",
+     "to": "23:00",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
     }
    },
    {
@@ -63,8 +59,10 @@
     "bg": "#333",
     "schedule": {
      "days": "0123456",
-     "from": "08:30",
-     "to": "23:00"
+     "from": "20:30",
+     "to": "23:00",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
     }
    }
   ],
@@ -73,17 +71,12 @@
     "type": "slide",
     "duration": 15,
     "title": "THE JUNGLE GYM",
-    "body": "FIRST VISIT FREE \u00b7 junglegymfun.com",
+    "body": "FIRST VISIT FREE · junglegymfun.com",
     "bg": "#1f7a3a"
-   },
-   {
-    "type": "image",
-    "duration": 15,
-    "src": "media/sample.svg",
-    "fit": "cover"
    }
   ]
  },
- "reloadToken": "2026-10-19b",
- "heartbeatUrl": ""
+ "reloadToken": "2026-10-19-v4",
+ "heartbeatUrl": "",
+ "mediaVersion": "4"
 }

@@ -1,4 +1,6 @@
-<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8"><title>TJG Signage</title>
+<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: https://docs.google.com https://script.google.com https://script.googleusercontent.com; frame-src 'self' https://junglegymfun.com https://www.junglegymfun.com https://thejunglegymusa.com https://www.thejunglegymusa.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><title>TJG Signage</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 html,body{margin:0;width:100%;height:100%;background:#000;overflow:hidden;font-family:Arial,Helvetica,sans-serif;cursor:none}
@@ -10,11 +12,21 @@ html,body{margin:0;width:100%;height:100%;background:#000;overflow:hidden;font-f
 #clock{position:absolute;right:2vmin;bottom:1.5vmin;color:rgba(255,255,255,.6);font-size:3vmin;z-index:5}
 #dbg{position:absolute;left:1vmin;top:1vmin;background:rgba(0,0,0,.8);color:#0f0;font:2vmin monospace;padding:1vmin;z-index:9;white-space:pre;display:none}
 </style></head>
-<body><div id="stage"><div class="layer" id="A"></div><div class="layer" id="B"></div><div id="clock"></div></div><div id="dbg"></div>
+<body><div id="stage"><div class="layer on" id="A" style="background:#1f7a3a"><h1>The Jungle Gym</h1><p>Loading&hellip;</p></div><div class="layer" id="B"></div><div id="clock"></div></div><div id="dbg"></div>
 <script>
 /* TJG clean-room signage player (ES5, no VXT code). Params: screen, src (playlist JSON or published Google Sheet CSV), rotate=0|90|270, debug=1 */
 function qp(k){var m=new RegExp('[?&]'+k+'=([^&#]*)').exec(location.search);return m?decodeURIComponent(m[1].replace(/\+/g,' ')):null}
-var SRC=qp('src')||'playlist.json',SCREEN=qp('screen')||'default',ROT=+(qp('rotate')||0),DEBUG=qp('debug')==='1';
+var TZ='America/Los_Angeles',FMT=null;try{FMT=new Intl.DateTimeFormat('en-US',{timeZone:TZ,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',weekday:'short'})}catch(e){FMT=null}
+var DOW={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+/* wall-clock parts in Pacific time regardless of the TV's timezone setting; falls back to device local time on very old engines */
+function la(d){d=d||new Date();if(FMT&&FMT.formatToParts){var o={};FMT.formatToParts(d).forEach(function(x){o[x.type]=x.value});var h=+o.hour%24;
+ return{y:+o.year,mo:+o.month,d:+o.day,h:h,mi:+o.minute,dow:DOW[o.weekday],ymd:o.year+'-'+o.month+'-'+o.day}}
+ return{y:d.getFullYear(),mo:d.getMonth()+1,d:d.getDate(),h:d.getHours(),mi:d.getMinutes(),dow:d.getDay(),ymd:d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}}
+/* allowlists: playlist source and web items can only point at TJG / Google hosts */
+var SRC_OK=/^(blob:|https:\/\/docs\.google\.com\/|https:\/\/script\.google(usercontent)?\.com\/)/,WEB_OK=/^https:\/\/(www\.)?(junglegymfun\.com|thejunglegymusa\.com)(\/|$)/;
+function safeMedia(u){u=String(u||'');return (/^[a-z][a-z0-9+.-]*:/i.test(u)||/^\/\//.test(u)||/\.\.\//.test(u))?'':u} /* same-origin relative paths only */
+function mv(u){var v=data&&data.mediaVersion;return v?u+(u.indexOf('?')>-1?'&':'?')+'mv='+encodeURIComponent(v):u}
+var SRC0=qp('src'),SRC=(SRC0&&(SRC_OK.test(SRC0)||!/^[a-z]+:|^\/\//i.test(SRC0)))?SRC0:'playlist.json',SCREEN=qp('screen')||'default',ROT=+(qp('rotate')||0),DEBUG=qp('debug')==='1';
 var data=null,idx=0,timer=null,cur='A',lastOk=0,lastErr='',reloadToken=null,started=Date.now(),ticks=0,shown=0,stallT=null;
 function $(i){return document.getElementById(i)}
 function xf(s,v){s.webkitTransform=v;s.transform=v}
@@ -36,23 +48,29 @@ function csvToJson(t){ // columns: screen,type,src,title,body,bg,duration,days,f
   duration:o.duration?+o.duration:(o.type==='video'?0:10),
   schedule:(o.days||o.from||o.to||o.start||o.end)?{days:o.days,from:o.from,to:o.to,start:o.start,end:o.end}:null})});
  return out}
-function mediaList(j){var m=[],k;for(k in j.playlists)(j.playlists[k]||[]).forEach(function(x){if(x.src&&x.type!=='web')m.push(x.src)});return m}
+function mediaList(j){var m=[],k,v=j.mediaVersion;for(k in j.playlists)(j.playlists[k]||[]).forEach(function(x){var u=x.type!=='web'&&safeMedia(x.src);if(u)m.push(v?u+(u.indexOf('?')>-1?'&':'?')+'mv='+encodeURIComponent(v):u)});return m}
 function precache(j){if(!j||!navigator.serviceWorker)return;navigator.serviceWorker.ready.then(function(reg){var w=reg.active||navigator.serviceWorker.controller;if(w)w.postMessage({precache:mediaList(j)})})['catch'](function(){})}
-function load(){var u=/^blob:/.test(SRC)?SRC:SRC+(SRC.indexOf('?')>-1?'&':'?')+'t='+Date.now();
- return fetch(u,{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('HTTP '+r.status);return r.text()}).then(function(t){
+var loading=false;
+function tfetch(u,o,ms){return new Promise(function(res,rej){var t=setTimeout(function(){rej(Error('timeout'))},ms);fetch(u,o).then(function(r){clearTimeout(t);res(r)},function(e){clearTimeout(t);rej(e)})})}
+function load(){if(loading)return Promise.resolve();loading=true;var u=/^blob:/.test(SRC)?SRC:SRC+(SRC.indexOf('?')>-1?'&':'?')+'t='+Date.now();
+ return tfetch(u,{cache:'no-store'},8000).then(function(r){if(!r.ok)throw Error('HTTP '+r.status);return r.text()}).then(function(t){
   var j=(t.replace(/^\s+/,'').charAt(0)=='{')?JSON.parse(t):csvToJson(t);
   if(reloadToken!==null&&j.reloadToken&&j.reloadToken!==reloadToken){safeReload()}
   reloadToken=j.reloadToken||'';data=j;lastOk=Date.now();lastErr='';
   try{localStorage.setItem('tjg-pl',JSON.stringify(j))}catch(e){}
   precache(j);
- })['catch'](function(e){lastErr=String(e);if(!data){try{data=JSON.parse(localStorage.getItem('tjg-pl')||'null')}catch(_){}}})}
+ })['catch'](function(e){lastErr=String(e);if(!data){try{data=JSON.parse(localStorage.getItem('tjg-pl')||'null')}catch(_){}}}).then(function(){loading=false},function(){loading=false})}
+function poll(){setTimeout(function(){load().then(poll,poll)},Math.max(1,(data&&+data.refreshMinutes)||5)*60000)}
 function hm(s){var a=String(s).split(':');return (+a[0])*60+(+a[1]||0)}
-function pd(s,endOfDay){var m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(s);if(m)return endOfDay?new Date(+m[1],+m[2]-1,+m[3],23,59,59,999):new Date(+m[1],+m[2]-1,+m[3]);return new Date(s)}
-function active(it,now){var sc=it.schedule;if(!sc)return true;now=now||new Date();var m=now.getHours()*60+now.getMinutes();
- if(sc.days&&String(sc.days).indexOf(String(now.getDay()))<0)return false;
- if(sc.from&&sc.to&&hm(sc.to)<hm(sc.from)){if(m<hm(sc.from)&&m>=hm(sc.to))return false}
- else{if(sc.from&&m<hm(sc.from))return false;if(sc.to&&m>=hm(sc.to))return false}
- if(sc.start&&now<pd(sc.start,false))return false;if(sc.end&&now>pd(sc.end,true))return false;return true}
+function dOK(sc,dow){return !sc.days||String(sc.days).indexOf(String(dow))>-1}
+function active(it,now){var sc=it.schedule;if(!sc)return true;var t=la(now),m=t.h*60+t.mi,f=sc.from?hm(sc.from):null,e=sc.to?hm(sc.to):null;
+ if(f!==null&&e!==null&&e<f){ /* overnight window, e.g. 20:00-02:00: the after-midnight part belongs to the previous day's schedule */
+  if(m>=f){if(!dOK(sc,t.dow))return false}else if(m<e){if(!dOK(sc,(t.dow+6)%7))return false}else return false}
+ else{if(!dOK(sc,t.dow))return false;if(f!==null&&m<f)return false;if(e!==null&&m>=e)return false}
+ /* start/end: date-only = Pacific calendar day (end inclusive); full ISO timestamps compared as instants */
+ if(sc.start){if(/^\d{4}-\d\d-\d\d$/.test(sc.start)){if(t.ymd<sc.start)return false}else if((now||new Date())<new Date(sc.start))return false}
+ if(sc.end){if(/^\d{4}-\d\d-\d\d$/.test(sc.end)){if(t.ymd>sc.end)return false}else if((now||new Date())>new Date(sc.end))return false}
+ return true}
 function pick(){if(!data)return[];var n=(data.screens&&(data.screens[SCREEN]||data.screens['default']))||SCREEN;var l=(data.playlists&&data.playlists[n])||[];return l.filter(function(x){return active(x)})}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function killVideo(o){var v=o&&o.querySelector('video');if(v){v.onended=v.onerror=null;try{v.pause();v.removeAttribute('src');v.load()}catch(e){}}}
@@ -60,26 +78,28 @@ function next(){clearTimeout(timer);clearInterval(stallT);ticks++;var list=pick(
  if(!list.length){killVideo(old);el.innerHTML='<h1>The Jungle Gym</h1>';el.style.background='#1f7a3a';swap(el,old,nx);timer=setTimeout(next,30000);return}
  var it=list[idx++%list.length];el.style.background=it.bg||'#000';
  var dur=(+it.duration||10)*1000,done=false;function go(){if(!done){done=true;next()}}
- if(it.type==='image'){el.innerHTML='<img src="'+esc(it.src)+'">';el.firstChild.style.objectFit=it.fit||'contain';el.firstChild.onerror=go}
+ var ms=it.type==='web'?'':safeMedia(it.src);if((it.type==='image'||it.type==='video')&&!ms){el.innerHTML='';timer=setTimeout(go,1000);return}
+ if(it.type==='web'&&!WEB_OK.test(String(it.src||''))){timer=setTimeout(go,1000);return} /* web item not on allowlist: skip */
+ if(it.type==='image'){el.innerHTML='<img alt="" src="'+esc(mv(ms))+'">';el.firstChild.style.objectFit=it.fit||'contain';el.firstChild.onerror=go}
  else if(it.type==='video'){killVideo(old);old.innerHTML=''; // one decoder at a time
-  el.innerHTML='<video src="'+esc(it.src)+'" autoplay muted playsinline preload="auto"></video>';var v=el.firstChild,lt=-1;
+  el.innerHTML='<video src="'+esc(mv(ms))+'" autoplay muted playsinline preload="auto"></video>';var v=el.firstChild,lt=-1;
   v.style.objectFit=it.fit||'contain';v.muted=true;v.onended=go;v.onerror=go;var p=v.play();if(p&&p['catch'])p['catch'](go);
   stallT=setInterval(function(){if(done||!v.parentNode){clearInterval(stallT);return}if(v.currentTime===lt)go();lt=v.currentTime},8000);
   dur=+it.duration?dur:600000}
- else if(it.type==='web'){el.innerHTML='<iframe src="'+esc(it.src)+'" sandbox="allow-scripts allow-same-origin"></iframe>'}
+ else if(it.type==='web'){el.innerHTML='<iframe src="'+esc(it.src)+'" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe>'}
  else el.innerHTML='<h1>'+esc(it.title)+'</h1><p>'+esc(it.body)+'</p>';
  swap(el,old,nx);shown++;timer=setTimeout(go,dur)}
 function swap(el,old,nx){el.className='layer on';old.className='layer';setTimeout(function(){if(old.className.indexOf('on')<0){killVideo(old);old.innerHTML=''}},800);cur=nx}
 function beat(){var d=new Date(),b={screen:SCREEN,ua:navigator.userAgent,up:Math.round((Date.now()-started)/1000),shown:shown,ticks:ticks,items:pick().length,lastOk:lastOk,err:lastErr,ver:data&&data.version,reloadToken:reloadToken,
- ts:d.toISOString(),local:d.toString(),tzOffsetMin:d.getTimezoneOffset(),online:navigator.onLine,sw:!!(navigator.serviceWorker&&navigator.serviceWorker.controller),w:innerWidth,h:innerHeight};
+ ts:d.toISOString(),local:d.toString(),la:(function(t){return t.ymd+' '+pad(t.h)+':'+pad(t.mi)+' PT'})(la(d)),player:4,tzOffsetMin:d.getTimezoneOffset(),online:navigator.onLine,sw:!!(navigator.serviceWorker&&navigator.serviceWorker.controller),w:innerWidth,h:innerHeight};
  if(DEBUG)$('dbg').textContent=JSON.stringify(b,null,1);
  if(data&&data.heartbeatUrl&&window.fetch)fetch(data.heartbeatUrl,{method:'POST',mode:'no-cors',body:JSON.stringify(b)})['catch'](function(){})}
 function pad(n){return (n<10?'0':'')+n}
-setInterval(function(){var d=new Date(),h=d.getHours();$('clock').textContent=((h%12)||12)+':'+pad(d.getMinutes())+(h<12?' AM':' PM')},1000);
+setInterval(function(){var t=la(),h=t.h;$('clock').textContent=((h%12)||12)+':'+pad(t.mi)+(h<12?' AM':' PM')},1000);
 if(DEBUG)$('dbg').style.display='block';
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js')['catch'](function(){});
 load().then(function(){next();beat();
- setInterval(load,((data&&data.refreshMinutes)||5)*60000);setInterval(beat,60000);
+ poll();setInterval(beat,60000);
  setInterval(safeReload,6*3600*1000);});
 // watchdog: counts every rotation tick (incl. the off-hours fallback), so an empty schedule never loops reloads
 var lastTicks=0;setInterval(function(){if(ticks===lastTicks)safeReload();lastTicks=ticks},15*60000);
