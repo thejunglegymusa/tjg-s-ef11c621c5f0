@@ -1,9 +1,9 @@
 import json,subprocess,time,urllib.request,websocket,sys,base64
 BASE=sys.argv[1]  # e.g. http://localhost:8765
 prof='/tmp/tjgprof'; subprocess.run(['rm','-rf',prof])
-p=subprocess.Popen(['google-chrome','--headless=new','--no-sandbox','--disable-gpu','--remote-debugging-port=9333','--remote-allow-origins=*','--user-data-dir='+prof,'--window-size=1920,1080','about:blank'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+p=subprocess.Popen(['google-chrome','--headless=new','--no-sandbox','--disable-gpu','--remote-debugging-port=9334','--remote-allow-origins=*','--user-data-dir='+prof,'--window-size=1920,1080','about:blank'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 time.sleep(2)
-t=[x for x in json.load(urllib.request.urlopen('http://127.0.0.1:9333/json')) if x['type']=='page'][0]
+t=[x for x in json.load(urllib.request.urlopen('http://127.0.0.1:9334/json')) if x['type']=='page'][0]
 ws=websocket.create_connection(t['webSocketDebuggerUrl']);n=[0];logs=[]
 def cmd(m,**pr):
     n[0]+=1;ws.send(json.dumps({'id':n[0],'method':m,'params':pr}))
@@ -53,5 +53,22 @@ res['v4_splash_first_paint']=None
 cmd('Page.navigate',url=BASE+'/index.html?screen=lobby&src=https://evil.com/p.json');time.sleep(0.05)
 res['v4_splash_first_paint']=ev("document.getElementById('A').innerText")
 time.sleep(2);res['v4_evil_src_ignored']=ev("SRC")
+# v5: old Chromium where hourCycle is ignored (and worst case: forced 12h output with dayPeriod)
+for name,patch in [('hc_ignored',"o=Object.assign({},o);delete o.hourCycle;"),('forced_12h',"o=Object.assign({},o);delete o.hourCycle;o.hour12=true;")]:
+    sid=cmd('Page.addScriptToEvaluateOnNewDocument',source="(function(){var D=Intl.DateTimeFormat;Intl.DateTimeFormat=function(l,o){o=o||{};"+patch+"return new D(l,o)};Intl.DateTimeFormat.prototype=D.prototype})()")['identifier']
+    cmd('Page.navigate',url=BASE+'/index.html?screen=lobby&debug=1');time.sleep(4)
+    res['v5_'+name+'_parts']=ev("JSON.stringify(FMT.formatToParts(new Date('2026-10-20T04:05:00Z')).map(function(x){return x.type+'='+x.value}))")
+    res['v5_'+name+'_la']=ev("var t=la(new Date('2026-10-20T04:05:00Z'));pad(t.h)+':'+pad(t.mi)")
+    res['v5_'+name+'_lobby_active']=ev("['2026-10-20T03:30:00Z','2026-10-20T04:05:00Z','2026-10-20T05:59:00Z','2026-10-20T06:00:00Z','2026-10-20T03:29:00Z'].map(function(d){return data.playlists.lobby.filter(function(x){return active(x,new Date(d))}).length+'/'+data.playlists.lobby.length}).join(' ')")
+    res['v5_'+name+'_noon']=ev("var t=la(new Date('2026-10-19T19:05:00Z'));pad(t.h)+':'+pad(t.mi)")
+    res['v5_'+name+'_midnight']=ev("var t=la(new Date('2026-10-19T07:05:00Z'));pad(t.h)+':'+pad(t.mi)")
+    cmd('Page.removeScriptToEvaluateOnNewDocument',identifier=sid)
+cmd('Page.navigate',url=BASE+'/index.html?screen=lobby&debug=1');time.sleep(4)
+res['v5_player']=ev("JSON.parse(document.getElementById('dbg').textContent).player")
+res['v5_dbg_la']=ev("JSON.parse(document.getElementById('dbg').textContent).la")
+res['v5_csv_whitelist']=ev("JSON.stringify((function(j){return [j.refreshMinutes,j.__proto__===Object.prototype,j.evil,j.screens.default]})(csvToJson('screen,type,src,title,body\\n,config,,refreshMinutes,3\\n,config,,evil,1\\n,config,,__proto__,x\\n,config,,screens,x\\n')))")
+res['v5_fail_delay']=ev("new Promise(function(r){data={screens:{default:'x'},playlists:{x:[{type:'image',src:'media/missing.png'},{type:'slide',title:'B'}]}};idx=0;var t0=Date.now();next();var i=setInterval(function(){if(document.querySelector('.layer.on').innerText.indexOf('B')>-1){clearInterval(i);r(Date.now()-t0)}},100);setTimeout(function(){r('timeout')},6000)})")
+res['v5_range']=ev("fetch('media/sample.svg').then(()=>new Promise(r=>setTimeout(r,500))).then(()=>Promise.all([fetch('media/sample.svg',{headers:{Range:'bytes=0-9'}}).then(r=>r.status+' '+r.headers.get('content-range')+' '+r.headers.get('content-length')),fetch('media/sample.svg',{headers:{Range:'bytes=99999999-'}}).then(r=>r.status+' '+r.headers.get('content-range'))])).then(a=>a.join(' | '))")
+res['v5_cache']=ev("caches.keys().then(k=>k.join(','))")
 print(json.dumps(res,indent=1))
 print('exceptions',logs);p.kill()

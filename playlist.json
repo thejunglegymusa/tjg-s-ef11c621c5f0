@@ -1,5 +1,5 @@
 {
- "version": 4,
+ "version": 5,
  "refreshMinutes": 5,
  "screens": {
   "default": "lobby",
@@ -76,7 +76,7 @@
    }
   ]
  },
- "reloadToken": "2026-10-19-v4",
+ "reloadToken": "2026-10-19-v5",
  "heartbeatUrl": "",
- "mediaVersion": "4"
+ "mediaVersion": "5"
 }
