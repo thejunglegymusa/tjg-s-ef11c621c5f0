@@ -1,5 +1,5 @@
 {
- "version": 2,
+ "version": 3,
  "refreshMinutes": 5,
  "screens": {
   "default": "lobby",
@@ -17,20 +17,20 @@
     "bg": "#1f7a3a",
     "schedule": {
      "days": "0123456",
-     "from": "09:00",
-     "to": "21:00"
+     "from": "08:30",
+     "to": "23:00"
     }
    },
    {
     "type": "slide",
     "duration": 10,
-    "title": "Classes start at :00",
+    "title": "Classes start on the hour",
     "body": "Coaches welcome class kids \u00b7 Open Play kids head to the play area",
     "bg": "#0d4f8b",
     "schedule": {
-     "days": "12345",
-     "from": "15:00",
-     "to": "19:00"
+     "days": "0123456",
+     "from": "08:30",
+     "to": "23:00"
     }
    },
    {
@@ -38,12 +38,22 @@
     "duration": 10,
     "title": "Birthday Parties",
     "body": "Book at junglegymfun.com",
-    "bg": "#b5338a"
+    "bg": "#b5338a",
+    "schedule": {
+     "days": "0123456",
+     "from": "08:30",
+     "to": "23:00"
+    }
    },
    {
     "type": "image",
     "duration": 10,
-    "src": "media/sample.svg"
+    "src": "media/sample.svg",
+    "schedule": {
+     "days": "0123456",
+     "from": "08:30",
+     "to": "23:00"
+    }
    },
    {
     "type": "slide",
@@ -53,8 +63,8 @@
     "bg": "#333",
     "schedule": {
      "days": "0123456",
-     "from": "18:00",
-     "to": "21:30"
+     "from": "08:30",
+     "to": "23:00"
     }
    }
   ],
@@ -74,6 +84,6 @@
    }
   ]
  },
- "reloadToken": "2026-10-19a",
+ "reloadToken": "2026-10-19b",
  "heartbeatUrl": ""
 }
