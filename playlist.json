@@ -13,56 +13,268 @@
   "lobby": [
    {
     "type": "slide",
-    "duration": 12,
+    "duration": 5,
     "title": "FIRST VISIT FREE",
     "body": "Open Play · ages 0–12",
     "bg": "#1f7a3a",
     "schedule": {
      "days": "0123456",
-     "from": "20:30",
-     "to": "23:00",
+     "from": "23:15",
+     "to": "23:59",
      "start": "2026-10-19",
      "end": "2026-10-19"
     }
    },
    {
     "type": "slide",
-    "duration": 10,
+    "duration": 5,
     "title": "Classes start on the hour",
     "body": "Coaches welcome class kids · Open Play kids head to the play area",
     "bg": "#0d4f8b",
     "schedule": {
      "days": "0123456",
-     "from": "20:30",
-     "to": "23:00",
+     "from": "23:15",
+     "to": "23:59",
      "start": "2026-10-19",
      "end": "2026-10-19"
     }
    },
    {
     "type": "slide",
-    "duration": 10,
+    "duration": 5,
     "title": "Birthday Parties",
     "body": "Book at junglegymfun.com",
     "bg": "#b5338a",
     "schedule": {
      "days": "0123456",
-     "from": "20:30",
-     "to": "23:00",
+     "from": "23:15",
+     "to": "23:59",
      "start": "2026-10-19",
      "end": "2026-10-19"
     }
    },
    {
     "type": "slide",
-    "duration": 10,
+    "duration": 5,
     "title": "Thanks for playing!",
     "body": "See you tomorrow",
     "bg": "#333",
     "schedule": {
      "days": "0123456",
-     "from": "20:30",
-     "to": "23:00",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "title",
+    "duration": 5,
+    "kicker": "Burien, WA",
+    "title": "The Jungle Gym",
+    "subtitle": "816 SW 152nd St, Burien · junglegymfun.com",
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "promo",
+    "duration": 5,
+    "kicker": "Your first visit is free",
+    "headline": "Free First Visit",
+    "price": "FREE",
+    "priceNote": "One class, one Open Play, or one Parents Night Out",
+    "cta": "Book at junglegymfun.com",
+    "qr": "https://junglegymfun.com/",
+    "qrLabel": "Scan to book",
+    "bg": "#1f7a3a",
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "promo",
+    "duration": 5,
+    "kicker": "Membership",
+    "headline": "Standard",
+    "price": "$149/mo",
+    "priceNote": "Unlimited gymnastics & ninja classes · Unlimited Open Play every day",
+    "cta": "Ask at the front desk",
+    "qr": "https://junglegymfun.com/pricing",
+    "qrLabel": "See all plans",
+    "bg": "#14432A",
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "promo",
+    "duration": 5,
+    "kicker": "Membership",
+    "headline": "Premium",
+    "price": "$199/mo",
+    "priceNote": "Everything in Standard + Parents Night Out included",
+    "cta": "Ask at the front desk",
+    "qr": "https://junglegymfun.com/pricing",
+    "qrLabel": "See all plans",
+    "bg": "#0d4f8b",
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "schedule",
+    "duration": 5,
+    "title": "Classes this week",
+    "subtitle": "[[Sample rows from the class-folder plan, confirm against Momence before going live]]",
+    "rows": [
+     {
+      "day": "Mon",
+      "time": "4:00 PM",
+      "name": "Kids (Ages 3-5)",
+      "color": "#F59E0B"
+     },
+     {
+      "day": "Mon",
+      "time": "5:00 PM",
+      "name": "Youth (Ages 6-12)",
+      "color": "#16A34A"
+     },
+     {
+      "day": "Wed",
+      "time": "4:00 PM",
+      "name": "Ninja (Ages 6-12)",
+      "color": "#9333EA"
+     },
+     {
+      "day": "Sat",
+      "time": "9:00 AM",
+      "name": "Toddlers (Ages 2-3)",
+      "color": "#2563EB"
+     }
+    ],
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "schedule",
+    "duration": 5,
+    "title": "Open hours",
+    "rows": [
+     {
+      "day": "Sun",
+      "time": "9 AM – 6 PM",
+      "name": "Open"
+     },
+     {
+      "day": "Mon–Thu",
+      "time": "9 AM – 7 PM",
+      "name": "Open"
+     },
+     {
+      "day": "Fri–Sat",
+      "time": "9 AM – 9 PM",
+      "name": "Open"
+     }
+    ],
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "announcement",
+    "duration": 5,
+    "kicker": "Birthday Parties",
+    "title": "Party at The Jungle Gym",
+    "body": "$449 · two hours · up to 30 kids",
+    "footer": "Book at junglegymfun.com",
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "list",
+    "duration": 5,
+    "title": "Welcome! Gym rules",
+    "items": [
+     "[[Rule 1: James to supply]]",
+     "[[Rule 2: James to supply]]",
+     "[[Rule 3: James to supply]]",
+     "[[Rule 4: James to supply]]"
+    ],
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "image",
+    "duration": 5,
+    "src": "media/fixture.png",
+    "caption": "Full-bleed photo slide",
+    "sub": "[[Replace with a real TJG photo in /media]]",
+    "fit": "cover",
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "video",
+    "duration": 5,
+    "src": "media/fixture.mp4",
+    "caption": "[[Replace with a real TJG video in /media]]",
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
+     "start": "2026-10-19",
+     "end": "2026-10-19"
+    }
+   },
+   {
+    "type": "clock",
+    "duration": 5,
+    "subtitle": "816 SW 152nd St, Burien",
+    "schedule": {
+     "days": "0123456",
+     "from": "23:15",
+     "to": "23:59",
      "start": "2026-10-19",
      "end": "2026-10-19"
     }
@@ -228,7 +440,7 @@
    }
   ]
  },
- "reloadToken": "2026-10-19-v6-1",
+ "reloadToken": "2026-10-19-v6-2",
  "heartbeatUrl": "",
  "mediaVersion": "6"
 }

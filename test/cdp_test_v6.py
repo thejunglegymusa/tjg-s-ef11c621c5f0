@@ -63,7 +63,7 @@ def range_check(tag):
     js="""(function(){var u='media/fixture.mp4?mv=6',H=['bytes=0-9','bytes=-10','bytes=39000-','bytes=abc','bytes=0-1,5-6','bytes=99999999-','bytes=-0','bytes=10-5'];
     return Promise.all(H.map(function(h){return fetch(u,{headers:{Range:h}}).then(function(r){return r.arrayBuffer().then(function(b){return h+' -> '+r.status+' '+(r.headers.get('content-range')||'-')+' len='+b.byteLength})})}))})().then(a=>a)"""
     res[tag+'_range']=ev(js)
-time.sleep(2);res['B_cache_keys']=ev("caches.open('tjg-signage-v6').then(c=>c.keys()).then(k=>k.map(x=>x.url.replace(location.origin,'')))")
+time.sleep(2);res['B_cache_keys']=ev("caches.open('tjg-signage-v6-2').then(c=>c.keys()).then(k=>k.map(x=>x.url.replace(location.origin,'')))")
 play_check('B_online');range_check('B_online')
 cmd('Network.setCacheDisabled',cacheDisabled=True)  # no HTTP memory/disk cache: offline media must come from the SW cache
 cmd('Network.emulateNetworkConditions',offline=True,latency=0,downloadThroughput=-1,uploadThroughput=-1)

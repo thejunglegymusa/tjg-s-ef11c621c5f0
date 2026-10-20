@@ -125,7 +125,7 @@ function next(){clearTimeout(timer);clearInterval(stallT);ticks++;var list=pick(
 function swap(el,old,nx){el.className='layer on'+(el.getAttribute('data-type')==='announcement'?' t-ann':'');old.className='layer';
  setTimeout(function(){if(old.className.indexOf('on')<0){killVideo(old);old.innerHTML=''}},800);cur=nx}
 function beat(){var d=new Date(),t=la(d),b={screen:SCREEN,ua:navigator.userAgent,up:Math.round((Date.now()-started)/1000),shown:shown,ticks:ticks,items:pick().length,lastOk:lastOk,err:lastErr,ver:data&&data.version,reloadToken:reloadToken,
- ts:d.toISOString(),local:d.toString(),la:t.ymd+' '+pad(t.h)+':'+pad(t.mi)+' PT',laSrc:LASRC,player:PLAYER,sub:'2026-10-19-v6-1',tzOffsetMin:d.getTimezoneOffset(),online:navigator.onLine,sw:!!(navigator.serviceWorker&&navigator.serviceWorker.controller),w:innerWidth,h:innerHeight};
+ ts:d.toISOString(),local:d.toString(),la:t.ymd+' '+pad(t.h)+':'+pad(t.mi)+' PT',laSrc:LASRC,player:PLAYER,sub:'2026-10-19-v6-2',tzOffsetMin:d.getTimezoneOffset(),online:navigator.onLine,sw:!!(navigator.serviceWorker&&navigator.serviceWorker.controller),w:innerWidth,h:innerHeight};
  if(DEBUG)$('dbg').textContent=JSON.stringify(b,null,1);
  if(data&&data.heartbeatUrl&&window.fetch)fetch(data.heartbeatUrl,{method:'POST',mode:'no-cors',body:JSON.stringify(b)})['catch'](function(){})}
 setInterval(tick,1000);

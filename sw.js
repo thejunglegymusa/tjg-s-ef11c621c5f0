@@ -1,5 +1,5 @@
 // TJG signage service worker v6.1 (bg() wraps waitUntil calls made after respondWith): shell network-first with cache fallback; media cache-first with full Range support; only touches caches named tjg-signage-*.
-var C='tjg-signage-v6-1',PFX='tjg-signage-',SHELL=['./','index.html','qr.js','playlist.json'],MEDIA=/\.(png|jpe?g|gif|webp|svg|mp4|webm)$/i;
+var C='tjg-signage-v6-2',PFX='tjg-signage-',SHELL=['./','index.html','qr.js','playlist.json'],MEDIA=/\.(png|jpe?g|gif|webp|svg|mp4|webm)$/i;
 self.addEventListener('install',function(e){e.waitUntil(caches.open(C).then(function(c){return c.addAll(SHELL)}).then(function(){return self.skipWaiting()}))});
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(x){return x.indexOf(PFX)===0&&x!==C}).map(function(x){return caches['delete'](x)}))}).then(function(){return self.clients.claim()}))});
 function precache(list){var keep=list.map(function(u){return new URL(u,self.registration.scope).href});
