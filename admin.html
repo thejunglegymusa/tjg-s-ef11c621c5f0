@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8"><title>TJG Signage Admin</title>
+<style>body{font-family:system-ui;max-width:1100px;margin:20px auto}textarea{width:100%;height:420px;font-family:monospace}iframe{width:640px;height:360px;border:1px solid #ccc}</style></head>
+<body><h2>TJG Signage – playlist editor (prototype)</h2>
+<p>Edit the JSON, click Preview to test locally, then Download and replace <code>playlist.json</code> on the host (or edit the Google Sheet if using Sheet mode). Screens pick up changes within refreshMinutes.</p>
+<textarea id="t"></textarea><br><button onclick="prev()">Preview</button> <button onclick="dl()">Download playlist.json</button> <button onclick="rl()">Remote reload all screens</button> <span id="m"></span>
+<p>Preview screen: <select id="sc"><option>default</option><option>lobby</option><option>front-door</option><option>desk-1</option></select></p><iframe id="f"></iframe>
+<script>
+fetch('playlist.json',{cache:'no-store'}).then(r=>r.text()).then(x=>t.value=x);
+function ok(){try{JSON.parse(t.value);m.textContent='✓ valid';return true}catch(e){m.textContent='✗ '+e.message;return false}}
+function prev(){if(!ok())return;const u=URL.createObjectURL(new Blob([t.value],{type:'application/json'}));f.src='index.html?screen='+sc.value+'&src='+encodeURIComponent(u)}
+function rl(){if(!ok())return;var j=JSON.parse(t.value);j.reloadToken=new Date().toISOString();t.value=JSON.stringify(j,null,1);m.textContent="reloadToken bumped – Download & publish; screens reload within refreshMinutes"}
+function dl(){if(!ok())return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t.value]));a.download='playlist.json';a.click()}
+</script></body></html>
