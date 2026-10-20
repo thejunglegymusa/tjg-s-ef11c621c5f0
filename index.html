@@ -1,32 +1,58 @@
 <!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: https://docs.google.com https://script.google.com https://script.googleusercontent.com; frame-src 'self' https://junglegymfun.com https://www.junglegymfun.com https://thejunglegymusa.com https://www.thejunglegymusa.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob:; frame-src 'none'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer"><title>TJG Signage</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 html,body{margin:0;width:100%;height:100%;background:#000;overflow:hidden;font-family:Arial,Helvetica,sans-serif;cursor:none}
 #stage{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;-webkit-transform-origin:0 0;transform-origin:0 0}
-.layer{position:absolute;top:0;right:0;bottom:0;left:0;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;color:#fff;text-align:center;opacity:0;-webkit-transition:opacity .6s;transition:opacity .6s}
+.layer{position:absolute;top:0;right:0;bottom:0;left:0;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;color:#fff;text-align:center;opacity:0;-webkit-transition:opacity .6s;transition:opacity .6s;overflow:hidden;box-sizing:border-box}
 .layer.on{opacity:1}
 .layer h1{font-size:9vmin;margin:0 5%;line-height:1.05}.layer p{font-size:4.5vmin;margin:2vmin 5%}
-.layer img,.layer video,.layer iframe{width:100%;height:100%;border:0;background:#000;object-fit:contain}
+.layer img,.layer video{position:absolute;left:0;top:0;width:100%;height:100%;border:0;background:#000;object-fit:contain}
+.brand{position:absolute;left:4vmin;top:3vmin;font-size:2.6vmin;font-weight:bold;letter-spacing:.3vmin;color:rgba(255,255,255,.85);text-transform:uppercase}
+.kick{display:inline-block;background:#F26B21;color:#fff;font-weight:bold;font-size:3.4vmin;padding:1vmin 3vmin;border-radius:5vmin;margin-bottom:2vmin;text-transform:uppercase;letter-spacing:.2vmin}
+.t-title h1{font-size:11vmin}.t-title p{font-size:5vmin;opacity:.92}
+.t-ann{background:#F7EFE1;color:#14432A}.t-ann .brand{color:#14432A}.t-ann h1{font-size:9vmin}.t-ann p{font-size:4.6vmin;max-width:80%}.t-ann .foot{position:absolute;bottom:4vmin;left:0;right:0;font-size:3.2vmin;font-weight:bold;color:#1f7a3a}
+.sched{width:84%;margin-top:2vmin;border-collapse:collapse;font-size:3.6vmin;text-align:left}
+.sched td{padding:1.3vmin 2vmin;border-bottom:.3vmin solid rgba(255,255,255,.25)}.sched td.d{font-weight:bold;width:20%}.sched td.tm{width:22%;white-space:nowrap}
+.sched .dot{display:inline-block;width:2.2vmin;height:2.2vmin;border-radius:50%;margin-right:1.5vmin;vertical-align:middle}.sched .nt{opacity:.8;font-size:2.8vmin}
+.promo{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;width:88%}
+.promo .tx{-webkit-box-flex:1;-webkit-flex:1;flex:1;text-align:left}.promo h1{margin:0;font-size:9vmin}
+.promo .price{font-size:13vmin;font-weight:bold;color:#FFD54A;margin:1vmin 0;line-height:1}.promo .pn{font-size:3.6vmin;opacity:.9}
+.promo .cta{display:inline-block;margin-top:3vmin;background:#F26B21;color:#fff;font-weight:bold;font-size:4vmin;padding:1.5vmin 4vmin;border-radius:1.5vmin}
+.promo .qr{width:34vmin;height:34vmin;margin-left:5vmin;background:#fff;border-radius:2vmin;padding:1.5vmin;text-align:center}.promo .qr svg{width:100%;height:100%;display:block}.promo .ql{font-size:2.6vmin;margin-top:1vmin;color:#fff;text-align:center}
+.list{margin:2vmin 0 0;padding:0;list-style:none;text-align:left;width:76%}.list li{font-size:4.2vmin;padding:1.2vmin 0 1.2vmin 8vmin;position:relative}
+.list li span.n{position:absolute;left:0;top:1vmin;width:5.4vmin;height:5.4vmin;line-height:5.4vmin;border-radius:50%;background:#F26B21;color:#fff;text-align:center;font-weight:bold;font-size:3.2vmin}
+.cap{position:absolute;left:0;right:0;bottom:0;padding:5vmin 5vmin 4vmin;text-align:left;background:-webkit-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,.75));background:linear-gradient(to bottom,rgba(0,0,0,0),rgba(0,0,0,.75))}
+.cap h2{margin:0;font-size:6.5vmin}.cap p{margin:1vmin 0 0;font-size:3.6vmin}
+.t-clock .tm{font-size:24vmin;font-weight:bold;line-height:1}.t-clock .dt{font-size:6vmin;margin-top:2vmin}.t-clock p{font-size:4vmin;opacity:.85}
+.ph{color:#FFD54A;font-style:italic}
 #clock{position:absolute;right:2vmin;bottom:1.5vmin;color:rgba(255,255,255,.6);font-size:3vmin;z-index:5}
 #dbg{position:absolute;left:1vmin;top:1vmin;background:rgba(0,0,0,.8);color:#0f0;font:2vmin monospace;padding:1vmin;z-index:9;white-space:pre;display:none}
 </style></head>
 <body><div id="stage"><div class="layer on" id="A" style="background:#1f7a3a"><h1>The Jungle Gym</h1><p>Loading&hellip;</p></div><div class="layer" id="B"></div><div id="clock"></div></div><div id="dbg"></div>
+<script src="qr.js"></script>
 <script>
-/* TJG clean-room signage player (ES5, no VXT code). Params: screen, src (playlist JSON or published Google Sheet CSV), rotate=0|90|270, debug=1 */
+/* TJG clean-room signage player v6 (ES5, no VXT code, no iframes). Every slide is a native template rendered here.
+   Params: screen, src (same-origin playlist path or blob: from admin preview), rotate=0|90|270, debug=1 */
+var PLAYER=6;
 function qp(k){var m=new RegExp('[?&]'+k+'=([^&#]*)').exec(location.search);return m?decodeURIComponent(m[1].replace(/\+/g,' ')):null}
 var TZ='America/Los_Angeles',FMT=null;try{FMT=new Intl.DateTimeFormat('en-US',{timeZone:TZ,hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',weekday:'short'})}catch(e){FMT=null}
-var DOW={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
-/* wall-clock parts in Pacific time regardless of the TV's timezone setting; falls back to device local time on very old engines */
-function la(d){d=d||new Date();if(FMT&&FMT.formatToParts){var o={};FMT.formatToParts(d).forEach(function(x){o[x.type]=x.value});var h=+o.hour%24;if(o.dayPeriod)h=h%12+(/^p/i.test(o.dayPeriod)?12:0);
- return{y:+o.year,mo:+o.month,d:+o.day,h:h,mi:+o.minute,dow:DOW[o.weekday],ymd:o.year+'-'+o.month+'-'+o.day}}
- return{y:d.getFullYear(),mo:d.getMonth()+1,d:d.getDate(),h:d.getHours(),mi:d.getMinutes(),dow:d.getDay(),ymd:d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}}
-/* allowlists: playlist source and web items can only point at TJG / Google hosts */
-var SRC_OK=/^(blob:|https:\/\/docs\.google\.com\/|https:\/\/script\.google(usercontent)?\.com\/)/,WEB_OK=/^https:\/\/(www\.)?(junglegymfun\.com|thejunglegymusa\.com)(\/|$)/;
-function safeMedia(u){u=String(u||'');return (/^[a-z][a-z0-9+.-]*:/i.test(u)||/^\/\//.test(u)||/\.\.\//.test(u))?'':u} /* same-origin relative paths only */
+var DOW={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6},LASRC='';
+function pad(n){return (n<10?'0':'')+n}
+/* manual Pacific time: PST UTC-8; PDT UTC-7 from 2nd Sun of March 02:00 local (10:00 UTC) to 1st Sun of Nov 02:00 local (09:00 UTC). Never uses the TV's zone. */
+function nthSun(y,m,n){var f=new Date(Date.UTC(y,m,1)).getUTCDay();return 1+((7-f)%7)+7*(n-1)}
+function laManual(d){var ms=d.getTime(),y=new Date(ms).getUTCFullYear(),s=Date.UTC(y,2,nthSun(y,2,2),10),e=Date.UTC(y,10,nthSun(y,10,1),9),off=(ms>=s&&ms<e)?-7:-8,u=new Date(ms+off*3600000);
+ return{y:u.getUTCFullYear(),mo:u.getUTCMonth()+1,d:u.getUTCDate(),h:u.getUTCHours(),mi:u.getUTCMinutes(),dow:u.getUTCDay(),ymd:u.getUTCFullYear()+'-'+pad(u.getUTCMonth()+1)+'-'+pad(u.getUTCDate()),src:'manual'}}
+function laIntl(d){var o={};FMT.formatToParts(d).forEach(function(x){o[x.type]=x.value});var h=+o.hour%24;if(o.dayPeriod)h=h%12+(/^p/i.test(o.dayPeriod)?12:0);
+ var r={y:+o.year,mo:+o.month,d:+o.day,h:h,mi:+o.minute,dow:DOW[o.weekday],ymd:o.year+'-'+o.month+'-'+o.day,src:'intl'};
+ if(isNaN(r.y+r.mo+r.d+r.h+r.mi)||r.dow===undefined||!/^\d{4}-\d\d-\d\d$/.test(r.ymd))throw Error('bad parts');return r}
+function la(d){d=d||new Date();var r;if(FMT&&FMT.formatToParts){try{r=laIntl(d)}catch(e){r=null}}if(!r)r=laManual(d);LASRC=r.src;return r}
+/* media: same-origin paths under media/ only: [A-Za-z0-9._-/], no '..', no backslash, no scheme, no '//' */
+function safeMedia(u){u=String(u||'');return (/^media\/[A-Za-z0-9._\-\/]+$/.test(u)&&!/\.\./.test(u)&&!/\/\//.test(u)&&u.indexOf('\\')<0)?u:''}
+function safeUrl(u){u=String(u||'');return /^https:\/\/[A-Za-z0-9.\-]+(\/[A-Za-z0-9\-._~%!$&'()*+,;=:@\/?#]*)?$/.test(u)&&u.length<=100?u:''} /* QR targets: https only, ≤100 chars */
 function mv(u){var v=data&&data.mediaVersion;return v?u+(u.indexOf('?')>-1?'&':'?')+'mv='+encodeURIComponent(v):u}
-var SRC0=qp('src'),SRC=(SRC0&&(SRC_OK.test(SRC0)||!/^[a-z]+:|^\/\//i.test(SRC0)))?SRC0:'playlist.json',SCREEN=qp('screen')||'default',ROT=+(qp('rotate')||0),DEBUG=qp('debug')==='1';
+var SRC0=qp('src'),SRC=(SRC0&&(/^blob:/.test(SRC0)||/^[A-Za-z0-9_\-]+\.json$/.test(SRC0)))?SRC0:'playlist.json',SCREEN=qp('screen')||'default',ROT=+(qp('rotate')||0),DEBUG=qp('debug')==='1';
 var data=null,idx=0,timer=null,cur='A',lastOk=0,lastErr='',reloadToken=null,started=Date.now(),ticks=0,shown=0,stallT=null;
 function $(i){return document.getElementById(i)}
 function xf(s,v){s.webkitTransform=v;s.transform=v}
@@ -35,26 +61,14 @@ function applyRotate(){var s=$('stage').style,w=innerWidth,h=innerHeight;
  else if(ROT===270){s.width=h+'px';s.height=w+'px';xf(s,'translate(0,'+h+'px) rotate(-90deg)')}
  else{s.width=w+'px';s.height=h+'px';xf(s,'none')}}
 window.addEventListener('resize',applyRotate);applyRotate();
+function tfetch(u,o,ms){return new Promise(function(res,rej){var t=setTimeout(function(){rej(Error('timeout'))},ms);fetch(u,o).then(function(r){clearTimeout(t);res(r)},function(e){clearTimeout(t);rej(e)})})}
 function safeReload(){tfetch('index.html?probe='+Date.now(),{cache:'no-store'},5000).then(function(r){if(r.ok)location.reload()})['catch'](function(){})}
-function csvToJson(t){ // columns: screen,type,src,title,body,bg,duration,days,from,to,start,end,fit ; type=config rows: title=key, body=value
- var rows=[],row=[],f='',q=false,i,c;for(i=0;i<t.length;i++){c=t.charAt(i);
-  if(q){if(c=='"'&&t.charAt(i+1)=='"'){f+='"';i++}else if(c=='"')q=false;else f+=c}
-  else if(c=='"')q=true;else if(c==','){row.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&t.charAt(i+1)=='\n')i++;row.push(f);rows.push(row);row=[];f=''}else f+=c}
- if(f||row.length){row.push(f);rows.push(row)}
- var hd=rows.shift().map(function(h){return h.replace(/^\s+|\s+$/g,'').toLowerCase()}),out={version:1,refreshMinutes:5,screens:{'default':'default'},playlists:{}};
- rows.forEach(function(r){var o={};hd.forEach(function(h,j){var v=r[j];if(v!==undefined&&v.replace(/\s/g,'')!=='')o[h]=v.replace(/^\s+|\s+$/g,'')});if(!o.type)return;
-  if(o.type==='config'){if(/^(refreshMinutes|reloadToken|heartbeatUrl|mediaVersion|version)$/.test(o.title))out[o.title]=isNaN(+o.body)?o.body:+o.body;return}
-  var s=o.screen||'default';out.screens[s]=s;(out.playlists[s]=out.playlists[s]||[]).push({type:o.type,src:o.src,title:o.title,body:o.body,bg:o.bg,fit:o.fit,
-  duration:o.duration?+o.duration:(o.type==='video'?0:10),
-  schedule:(o.days||o.from||o.to||o.start||o.end)?{days:o.days,from:o.from,to:o.to,start:o.start,end:o.end}:null})});
- return out}
-function mediaList(j){var m=[],k,v=j.mediaVersion;for(k in j.playlists)(j.playlists[k]||[]).forEach(function(x){var u=x.type!=='web'&&safeMedia(x.src);if(u)m.push(v?u+(u.indexOf('?')>-1?'&':'?')+'mv='+encodeURIComponent(v):u)});return m}
+function mediaList(j){var m=[],k,v=j.mediaVersion;for(k in j.playlists)(j.playlists[k]||[]).forEach(function(x){var u=(x.type==='image'||x.type==='video')&&safeMedia(x.src);if(u)m.push(v?u+'?mv='+encodeURIComponent(v):u)});return m}
 function precache(j){if(!j||!navigator.serviceWorker)return;navigator.serviceWorker.ready.then(function(reg){var w=reg.active||navigator.serviceWorker.controller;if(w)w.postMessage({precache:mediaList(j)})})['catch'](function(){})}
 var loading=false;
-function tfetch(u,o,ms){return new Promise(function(res,rej){var t=setTimeout(function(){rej(Error('timeout'))},ms);fetch(u,o).then(function(r){clearTimeout(t);res(r)},function(e){clearTimeout(t);rej(e)})})}
-function load(){if(loading)return Promise.resolve();loading=true;var u=/^blob:/.test(SRC)?SRC:SRC+(SRC.indexOf('?')>-1?'&':'?')+'t='+Date.now();
- return tfetch(u,{cache:'no-store'},8000).then(function(r){if(!r.ok)throw Error('HTTP '+r.status);return r.text()}).then(function(t){
-  var j=(t.replace(/^\s+/,'').charAt(0)=='{')?JSON.parse(t):csvToJson(t);
+function load(){if(loading)return Promise.resolve();loading=true;var u=/^blob:/.test(SRC)?SRC:SRC+'?t='+Date.now();
+ return tfetch(u,{cache:'no-store'},8000).then(function(r){if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(function(j){
+  if(!j||typeof j!=='object'||!j.playlists)throw Error('bad playlist');
   if(reloadToken!==null&&j.reloadToken&&j.reloadToken!==reloadToken){safeReload()}
   reloadToken=j.reloadToken||'';data=j;lastOk=Date.now();lastErr='';
   try{localStorage.setItem('tjg-pl',JSON.stringify(j))}catch(e){}
@@ -64,43 +78,58 @@ function poll(){setTimeout(function(){load().then(poll,poll)},Math.max(1,(data&&
 function hm(s){var a=String(s).split(':');return (+a[0])*60+(+a[1]||0)}
 function dOK(sc,dow){return !sc.days||String(sc.days).indexOf(String(dow))>-1}
 function active(it,now){var sc=it.schedule;if(!sc)return true;var t=la(now),m=t.h*60+t.mi,f=sc.from?hm(sc.from):null,e=sc.to?hm(sc.to):null;
- if(f!==null&&e!==null&&e<f){ /* overnight window, e.g. 20:00-02:00: the after-midnight part belongs to the previous day's schedule */
+ if(f!==null&&e!==null&&e<f){ /* overnight window: the after-midnight part belongs to the previous day's schedule */
   if(m>=f){if(!dOK(sc,t.dow))return false}else if(m<e){if(!dOK(sc,(t.dow+6)%7))return false}else return false}
  else{if(!dOK(sc,t.dow))return false;if(f!==null&&m<f)return false;if(e!==null&&m>=e)return false}
- /* start/end: date-only = Pacific calendar day (end inclusive); full ISO timestamps compared as instants */
  if(sc.start){if(/^\d{4}-\d\d-\d\d$/.test(sc.start)){if(t.ymd<sc.start)return false}else if((now||new Date())<new Date(sc.start))return false}
  if(sc.end){if(/^\d{4}-\d\d-\d\d$/.test(sc.end)){if(t.ymd>sc.end)return false}else if((now||new Date())>new Date(sc.end))return false}
  return true}
-function pick(){if(!data)return[];var n=(data.screens&&(data.screens[SCREEN]||data.screens['default']))||SCREEN;var l=(data.playlists&&data.playlists[n])||[];return l.filter(function(x){return active(x)})}
-function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function pick(){if(!data)return[];var n=(data.screens&&(data.screens[SCREEN]||data.screens['default']))||SCREEN;var l=(data.playlists&&data.playlists[n])||[];return l.filter(function(x){return TYPES[x.type]&&active(x)})}
+/* escape all playlist text; [[...]] marks a placeholder (rendered highlighted so staff see it needs a real value) */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]}).replace(/\[\[(.*?)\]\]/g,'<span class="ph">$1</span>')}
+function color(c,d){return /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/.test(String(c||''))?c:d}
+var BRAND='<div class="brand">The Jungle Gym</div>';
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+function clk(t){return ((t.h%12)||12)+':'+pad(t.mi)+(t.h<12?' AM':' PM')}
+function arr(a,n){return (a&&a.length)?a.slice(0,n):[]}
+var TYPES={
+ slide:function(it){return BRAND+'<h1>'+esc(it.title)+'</h1><p>'+esc(it.subtitle||it.body)+'</p>'},
+ title:function(it){return BRAND+'<div class="t-title">'+(it.kicker?'<div class="kick">'+esc(it.kicker)+'</div>':'')+'<h1>'+esc(it.title)+'</h1><p>'+esc(it.subtitle||it.body)+'</p></div>'},
+ schedule:function(it){var r=arr(it.rows,8).map(function(x){return '<tr><td class="d">'+esc(x.day)+'</td><td class="tm">'+esc(x.time)+'</td><td><span class="dot" style="background:'+color(x.color,'#F26B21')+'"></span>'+esc(x.name)+(x.note?' <span class="nt">'+esc(x.note)+'</span>':'')+'</td></tr>'}).join('');
+  return BRAND+'<h1>'+esc(it.title||'This week at the gym')+'</h1>'+(it.subtitle?'<p>'+esc(it.subtitle)+'</p>':'')+'<table class="sched">'+r+'</table>'},
+ promo:function(it){var q=safeUrl(it.qr),svg=(q&&window.QR)?QR.svg(q,'#14432A','#fff'):'';
+  return BRAND+'<div class="promo"><div class="tx">'+(it.kicker?'<div class="kick">'+esc(it.kicker)+'</div>':'')+'<h1>'+esc(it.headline||it.title)+'</h1>'+(it.price?'<div class="price">'+esc(it.price)+'</div>':'')+(it.priceNote?'<div class="pn">'+esc(it.priceNote)+'</div>':'')+(it.body?'<p style="margin:2vmin 0 0;text-align:left">'+esc(it.body)+'</p>':'')+(it.cta?'<div class="cta">'+esc(it.cta)+'</div>':'')+'</div>'+
+  (svg?'<div><div class="qr">'+svg+'</div><div class="ql">'+esc(it.qrLabel||'Scan with your phone')+'</div></div>':'')+'</div>'},
+ announcement:function(it){return BRAND+(it.kicker?'<div class="kick">'+esc(it.kicker)+'</div>':'')+'<h1>'+esc(it.title)+'</h1><p>'+esc(it.body)+'</p>'+(it.footer?'<div class="foot">'+esc(it.footer)+'</div>':'')},
+ list:function(it){return BRAND+'<h1>'+esc(it.title)+'</h1><ul class="list">'+arr(it.items,8).map(function(x,i){return '<li><span class="n">'+(i+1)+'</span>'+esc(x)+'</li>'}).join('')+'</ul>'},
+ image:function(it,ms){return '<img alt="" src="'+esc(mv(ms))+'">'+((it.caption||it.sub)?'<div class="cap"><h2>'+esc(it.caption)+'</h2>'+(it.sub?'<p>'+esc(it.sub)+'</p>':'')+'</div>':'')},
+ video:function(it,ms){return '<video src="'+esc(mv(ms))+'" autoplay muted playsinline preload="auto"></video>'+(it.caption?'<div class="cap"><h2>'+esc(it.caption)+'</h2></div>':'')},
+ clock:function(it){return BRAND+'<div class="t-clock"><div class="tm tclk"></div><div class="dt tdate"></div>'+(it.subtitle?'<p>'+esc(it.subtitle)+'</p>':'')+'</div>'}};
+var DEFBG={slide:'#1f7a3a',title:'#1f7a3a',schedule:'#14432A',promo:'#1f7a3a',announcement:'#F7EFE1',list:'#14432A',image:'#000',video:'#000',clock:'#14432A'};
 function killVideo(o){var v=o&&o.querySelector('video');if(v){v.onended=v.onerror=null;try{v.pause();v.removeAttribute('src');v.load()}catch(e){}}}
+function tick(){var t=la(),c=clk(t),i,e=document.querySelectorAll('.tclk'),f=document.querySelectorAll('.tdate');$('clock').textContent=c;
+ for(i=0;i<e.length;i++)e[i].textContent=c;for(i=0;i<f.length;i++)f[i].textContent=WD[t.dow]+', '+MON[t.mo-1]+' '+t.d+', '+t.y;
+ $('clock').style.display=document.querySelector('.layer.on .t-clock')?'none':''}
 function next(){clearTimeout(timer);clearInterval(stallT);ticks++;var list=pick();var nx=cur==='A'?'B':'A',el=$(nx),old=$(cur);
- if(!list.length){killVideo(old);el.innerHTML='<h1>The Jungle Gym</h1>';el.style.background='#1f7a3a';swap(el,old,nx);timer=setTimeout(next,30000);return}
- var it=list[idx++%list.length];el.style.background=it.bg||'#000';
+ if(!list.length){killVideo(old);el.removeAttribute('data-type');el.innerHTML='<h1>The Jungle Gym</h1>';el.style.background='#1f7a3a';el.style.color='';swap(el,old,nx);timer=setTimeout(next,30000);return}
+ var it=list[idx++%list.length];el.style.background=color(it.bg,DEFBG[it.type]);el.style.color=color(it.fg,'');
  var dur=(+it.duration||10)*1000,done=false;function go(){if(!done){done=true;next()}}function fail(){if(!done){clearTimeout(timer);clearInterval(stallT);timer=setTimeout(go,2000)}}
- var ms=it.type==='web'?'':safeMedia(it.src);if((it.type==='image'||it.type==='video')&&!ms){el.innerHTML='';timer=setTimeout(go,1000);return}
- if(it.type==='web'&&!WEB_OK.test(String(it.src||''))){timer=setTimeout(go,1000);return} /* web item not on allowlist: skip */
- if(it.type==='image'){el.innerHTML='<img alt="" src="'+esc(mv(ms))+'">';el.firstChild.style.objectFit=it.fit||'contain';el.firstChild.onerror=fail}
- else if(it.type==='video'){killVideo(old);old.innerHTML=''; // one decoder at a time
-  el.innerHTML='<video src="'+esc(mv(ms))+'" autoplay muted playsinline preload="auto"></video>';var v=el.firstChild,lt=-1;
-  v.style.objectFit=it.fit||'contain';v.muted=true;v.onended=go;v.onerror=fail;var p=v.play();if(p&&p['catch'])p['catch'](fail);
-  stallT=setInterval(function(){if(done||!v.parentNode){clearInterval(stallT);return}if(v.currentTime===lt)go();lt=v.currentTime},8000);
-  dur=+it.duration?dur:600000}
- else if(it.type==='web'){el.innerHTML='<iframe src="'+esc(it.src)+'" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe>'}
- else el.innerHTML='<h1>'+esc(it.title)+'</h1><p>'+esc(it.body)+'</p>';
- swap(el,old,nx);shown++;timer=setTimeout(go,dur)}
-function swap(el,old,nx){el.className='layer on';old.className='layer';setTimeout(function(){if(old.className.indexOf('on')<0){killVideo(old);old.innerHTML=''}},800);cur=nx}
-function beat(){var d=new Date(),b={screen:SCREEN,ua:navigator.userAgent,up:Math.round((Date.now()-started)/1000),shown:shown,ticks:ticks,items:pick().length,lastOk:lastOk,err:lastErr,ver:data&&data.version,reloadToken:reloadToken,
- ts:d.toISOString(),local:d.toString(),la:(function(t){return t.ymd+' '+pad(t.h)+':'+pad(t.mi)+' PT'})(la(d)),player:5,tzOffsetMin:d.getTimezoneOffset(),online:navigator.onLine,sw:!!(navigator.serviceWorker&&navigator.serviceWorker.controller),w:innerWidth,h:innerHeight};
+ var media=it.type==='image'||it.type==='video',ms=media?safeMedia(it.src):'';if(media&&!ms){timer=setTimeout(go,1000);return}
+ if(it.type==='video'){killVideo(old);old.innerHTML=''}
+ el.innerHTML=TYPES[it.type](it,ms);el.setAttribute('data-type',it.type);
+ if(it.type==='image'){var im=el.querySelector('img');im.style.objectFit=it.fit||'cover';im.onerror=fail}
+ else if(it.type==='video'){var v=el.querySelector('video'),lt=-1;v.style.objectFit=it.fit||'contain';v.muted=true;v.onended=go;v.onerror=fail;var p=v.play();if(p&&p['catch'])p['catch'](fail);
+  stallT=setInterval(function(){if(done||!v.parentNode){clearInterval(stallT);return}if(v.currentTime===lt)go();lt=v.currentTime},8000);dur=+it.duration?dur:600000}
+ swap(el,old,nx);shown++;tick();timer=setTimeout(go,dur)}
+function swap(el,old,nx){el.className='layer on'+(el.getAttribute('data-type')==='announcement'?' t-ann':'');old.className='layer';
+ setTimeout(function(){if(old.className.indexOf('on')<0){killVideo(old);old.innerHTML=''}},800);cur=nx}
+function beat(){var d=new Date(),t=la(d),b={screen:SCREEN,ua:navigator.userAgent,up:Math.round((Date.now()-started)/1000),shown:shown,ticks:ticks,items:pick().length,lastOk:lastOk,err:lastErr,ver:data&&data.version,reloadToken:reloadToken,
+ ts:d.toISOString(),local:d.toString(),la:t.ymd+' '+pad(t.h)+':'+pad(t.mi)+' PT',laSrc:LASRC,player:PLAYER,tzOffsetMin:d.getTimezoneOffset(),online:navigator.onLine,sw:!!(navigator.serviceWorker&&navigator.serviceWorker.controller),w:innerWidth,h:innerHeight};
  if(DEBUG)$('dbg').textContent=JSON.stringify(b,null,1);
  if(data&&data.heartbeatUrl&&window.fetch)fetch(data.heartbeatUrl,{method:'POST',mode:'no-cors',body:JSON.stringify(b)})['catch'](function(){})}
-function pad(n){return (n<10?'0':'')+n}
-setInterval(function(){var t=la(),h=t.h;$('clock').textContent=((h%12)||12)+':'+pad(t.mi)+(h<12?' AM':' PM')},1000);
+setInterval(tick,1000);
 if(DEBUG)$('dbg').style.display='block';
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js')['catch'](function(){});
-load().then(function(){next();beat();
- poll();setInterval(beat,60000);
- setInterval(safeReload,6*3600*1000);});
-// watchdog: counts every rotation tick (incl. the off-hours fallback), so an empty schedule never loops reloads
+load().then(function(){next();beat();poll();setInterval(beat,60000);setInterval(safeReload,6*3600*1000)});
 var lastTicks=0;setInterval(function(){if(ticks===lastTicks)safeReload();lastTicks=ticks},15*60000);
 </script></body></html>

@@ -1,13 +1,39 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; frame-src 'self'; connect-src 'self' blob:; object-src 'none'; base-uri 'none'"><title>TJG Signage Admin</title>
-<style>body{font-family:system-ui;max-width:1100px;margin:20px auto}textarea{width:100%;height:420px;font-family:monospace}iframe{width:640px;height:360px;border:1px solid #ccc}</style></head>
-<body><h2>TJG Signage – playlist editor (prototype)</h2>
-<p>Edit the JSON, click Preview to test locally, then Download and replace <code>playlist.json</code> on the host (or edit the Google Sheet if using Sheet mode). Screens pick up changes within refreshMinutes.</p>
+<!doctype html><html><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; frame-src 'self' blob:; connect-src 'self' blob:; object-src 'none'; base-uri 'none'"><title>TJG Signage Admin</title>
+<style>body{font-family:system-ui;max-width:1200px;margin:20px auto;padding:0 10px}textarea{width:100%;height:300px;font-family:monospace}iframe{width:640px;height:360px;border:1px solid #ccc}
+fieldset{border:1px solid #cfd8cf;border-radius:8px;margin:10px 0}label{display:inline-block;margin:4px 12px 4px 0}input,select{padding:4px}input.w{width:420px}.hint{color:#666;font-size:13px}#rows input{width:120px}</style></head>
+<body><h2>TJG Signage – playlist editor (prototype, v6)</h2>
+<p class="hint">Every slide is a native template drawn by the player (no websites are embedded). Build a slide below, click <b>Add slide</b>, Preview, then Download and replace <code>playlist.json</code> on the host. Screens pick up changes within refreshMinutes. Wrap unknown text in [[double brackets]] to show it as a highlighted placeholder.</p>
+<fieldset><legend><b>New slide</b></legend>
+<label>Screen playlist <input id="pl" value="showcase"></label>
+<label>Type <select id="ty" onchange="form()"><option>title</option><option>schedule</option><option>promo</option><option>announcement</option><option>list</option><option>image</option><option>video</option><option>clock</option><option>slide</option></select></label>
+<label>Seconds <input id="du" type="number" value="10" style="width:60px"></label>
+<label>Background <input id="bg" placeholder="#1f7a3a" style="width:90px"></label>
+<div id="fs"></div>
+<label>Days (0=Sun..6=Sat) <input id="sd" placeholder="0123456" style="width:80px"></label><label>From <input id="sf" placeholder="20:30" style="width:60px"></label><label>To <input id="st" placeholder="23:00" style="width:60px"></label><label>Start date <input id="ss" placeholder="2026-10-19" style="width:100px"></label><label>End date <input id="se" placeholder="2026-10-19" style="width:100px"></label>
+<br><button onclick="add()">Add slide</button> <span class="hint">Image/video files must be uploaded to the repo's <code>media/</code> folder; use paths like <code>media/photo.jpg</code>.</span>
+</fieldset>
 <textarea id="t"></textarea><br><button onclick="prev()">Preview</button> <button onclick="dl()">Download playlist.json</button> <button onclick="rl()">Remote reload all screens</button> <span id="m"></span>
-<p>Preview screen: <select id="sc"><option>default</option><option>lobby</option><option>front-door</option><option>desk-1</option></select></p><iframe id="f"></iframe>
+<p>Preview screen: <input id="sc" value="showcase"></p><iframe id="f"></iframe>
 <script>
-fetch('playlist.json',{cache:'no-store'}).then(r=>r.text()).then(x=>t.value=x);
+var F={title:['kicker','title','subtitle'],slide:['title','subtitle'],schedule:['title','subtitle','rows'],promo:['kicker','headline','price','priceNote','body','cta','qr','qrLabel'],
+ announcement:['kicker','title','body','footer'],list:['title','items'],image:['src','caption','sub','fit'],video:['src','caption'],clock:['subtitle']};
+var H={rows:'one row per line: Day | Time | Class | #color(optional) | note(optional)',items:'one item per line',qr:'https:// link, ≤100 chars, turned into a QR code on the TV',src:'media/…',fit:'cover or contain'};
+function $(i){return document.getElementById(i)}
+function form(){$('fs').innerHTML=F[$('ty').value].map(function(k){return (k==='rows'||k==='items')?'<label style="display:block">'+k+' <span class="hint">('+H[k]+')</span><br><textarea id="f_'+k+'" style="height:110px"></textarea></label>':'<label>'+k+' <input class="w" id="f_'+k+'" placeholder="'+(H[k]||'')+'"></label>'}).join('')}
+function add(){if(!ok())return;var j=JSON.parse(t.value),ty=$('ty').value,s={type:ty,duration:+$('du').value||(ty==='video'?0:10)};if($('bg').value)s.bg=$('bg').value;
+ F[ty].forEach(function(k){var v=$('f_'+k).value.trim();if(!v)return;
+  if(k==='items')s.items=v.split('\n').map(function(x){return x.trim()}).filter(Boolean);
+  else if(k==='rows')s.rows=v.split('\n').filter(function(x){return x.trim()}).map(function(l){var a=l.split('|').map(function(x){return x.trim()}),r={day:a[0],time:a[1],name:a[2]};if(a[3])r.color=a[3];if(a[4])r.note=a[4];return r});
+  else s[k]=v});
+ if((ty==='image'||ty==='video')&&!/^media\/[A-Za-z0-9._\-\/]+$/.test(s.src||'')){m.textContent='✗ src must be media/<file>';return}
+ if(s.qr&&!/^https:\/\//.test(s.qr)){m.textContent='✗ QR link must start with https://';return}
+ var sc={};['d:days','f:from','t:to','s:start','e:end'].forEach(function(p){var a=p.split(':'),v=$('s'+a[0]).value.trim();if(v)sc[a[1]]=v});if(Object.keys(sc).length)s.schedule=sc;
+ var pl=$('pl').value.trim()||'showcase';j.playlists[pl]=j.playlists[pl]||[];j.playlists[pl].push(s);j.screens=j.screens||{};if(!j.screens[pl])j.screens[pl]=pl;
+ t.value=JSON.stringify(j,null,1);m.textContent='✓ added to '+pl+' – Preview, then Download';sc_.value=pl;prev()}
+var sc_=$('sc');form();
+fetch('playlist.json',{cache:'no-store'}).then(function(r){return r.text()}).then(function(x){t.value=x});
 function ok(){try{JSON.parse(t.value);m.textContent='✓ valid';return true}catch(e){m.textContent='✗ '+e.message;return false}}
-function prev(){if(!ok())return;const u=URL.createObjectURL(new Blob([t.value],{type:'application/json'}));f.src='index.html?screen='+sc.value+'&src='+encodeURIComponent(u)}
-function rl(){if(!ok())return;var j=JSON.parse(t.value);j.reloadToken=new Date().toISOString();t.value=JSON.stringify(j,null,1);m.textContent="reloadToken bumped – Download & publish; screens reload within refreshMinutes"}
-function dl(){if(!ok())return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t.value]));a.download='playlist.json';a.click()}
+function prev(){if(!ok())return;var u=URL.createObjectURL(new Blob([t.value],{type:'application/json'}));f.src='index.html?screen='+encodeURIComponent(sc_.value)+'&src='+encodeURIComponent(u)}
+function rl(){if(!ok())return;var j=JSON.parse(t.value);j.reloadToken=new Date().toISOString();t.value=JSON.stringify(j,null,1);m.textContent='reloadToken bumped – Download & publish; screens reload within refreshMinutes'}
+function dl(){if(!ok())return;var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t.value]));a.download='playlist.json';a.click()}
 </script></body></html>

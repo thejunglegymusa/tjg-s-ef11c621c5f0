@@ -1,11 +1,13 @@
 {
- "version": 5,
+ "version": 6,
  "refreshMinutes": 5,
  "screens": {
   "default": "lobby",
   "lobby": "lobby",
   "front-door": "frontdoor",
-  "desk-1": "lobby"
+  "desk-1": "lobby",
+  "showcase": "showcase",
+  "fixtures": "fixtures"
  },
  "playlists": {
   "lobby": [
@@ -74,9 +76,159 @@
     "body": "FIRST VISIT FREE · junglegymfun.com",
     "bg": "#1f7a3a"
    }
+  ],
+  "showcase": [
+   {
+    "type": "title",
+    "duration": 8,
+    "kicker": "Burien, WA",
+    "title": "The Jungle Gym",
+    "subtitle": "816 SW 152nd St, Burien · junglegymfun.com"
+   },
+   {
+    "type": "promo",
+    "duration": 12,
+    "kicker": "Your first visit is free",
+    "headline": "Free First Visit",
+    "price": "FREE",
+    "priceNote": "One class, one Open Play, or one Parents Night Out",
+    "cta": "Book at junglegymfun.com",
+    "qr": "https://junglegymfun.com/",
+    "qrLabel": "Scan to book",
+    "bg": "#1f7a3a"
+   },
+   {
+    "type": "promo",
+    "duration": 12,
+    "kicker": "Membership",
+    "headline": "Standard",
+    "price": "$149/mo",
+    "priceNote": "Unlimited gymnastics & ninja classes · Unlimited Open Play every day",
+    "cta": "Ask at the front desk",
+    "qr": "https://junglegymfun.com/pricing",
+    "qrLabel": "See all plans",
+    "bg": "#14432A"
+   },
+   {
+    "type": "promo",
+    "duration": 12,
+    "kicker": "Membership",
+    "headline": "Premium",
+    "price": "$199/mo",
+    "priceNote": "Everything in Standard + Parents Night Out included",
+    "cta": "Ask at the front desk",
+    "qr": "https://junglegymfun.com/pricing",
+    "qrLabel": "See all plans",
+    "bg": "#0d4f8b"
+   },
+   {
+    "type": "schedule",
+    "duration": 14,
+    "title": "Classes this week",
+    "subtitle": "[[Sample rows from the class-folder plan, confirm against Momence before going live]]",
+    "rows": [
+     {
+      "day": "Mon",
+      "time": "4:00 PM",
+      "name": "Kids (Ages 3-5)",
+      "color": "#F59E0B"
+     },
+     {
+      "day": "Mon",
+      "time": "5:00 PM",
+      "name": "Youth (Ages 6-12)",
+      "color": "#16A34A"
+     },
+     {
+      "day": "Wed",
+      "time": "4:00 PM",
+      "name": "Ninja (Ages 6-12)",
+      "color": "#9333EA"
+     },
+     {
+      "day": "Sat",
+      "time": "9:00 AM",
+      "name": "Toddlers (Ages 2-3)",
+      "color": "#2563EB"
+     }
+    ]
+   },
+   {
+    "type": "schedule",
+    "duration": 10,
+    "title": "Open hours",
+    "rows": [
+     {
+      "day": "Sun",
+      "time": "9 AM – 6 PM",
+      "name": "Open"
+     },
+     {
+      "day": "Mon–Thu",
+      "time": "9 AM – 7 PM",
+      "name": "Open"
+     },
+     {
+      "day": "Fri–Sat",
+      "time": "9 AM – 9 PM",
+      "name": "Open"
+     }
+    ]
+   },
+   {
+    "type": "announcement",
+    "duration": 10,
+    "kicker": "Birthday Parties",
+    "title": "Party at The Jungle Gym",
+    "body": "$449 · two hours · up to 30 kids",
+    "footer": "Book at junglegymfun.com"
+   },
+   {
+    "type": "list",
+    "duration": 12,
+    "title": "Welcome! Gym rules",
+    "items": [
+     "[[Rule 1: James to supply]]",
+     "[[Rule 2: James to supply]]",
+     "[[Rule 3: James to supply]]",
+     "[[Rule 4: James to supply]]"
+    ]
+   },
+   {
+    "type": "image",
+    "duration": 8,
+    "src": "media/fixture.png",
+    "caption": "Full-bleed photo slide",
+    "sub": "[[Replace with a real TJG photo in /media]]",
+    "fit": "cover"
+   },
+   {
+    "type": "video",
+    "duration": 0,
+    "src": "media/fixture.mp4",
+    "caption": "[[Replace with a real TJG video in /media]]"
+   },
+   {
+    "type": "clock",
+    "duration": 8,
+    "subtitle": "816 SW 152nd St, Burien"
+   }
+  ],
+  "fixtures": [
+   {
+    "type": "image",
+    "duration": 5,
+    "src": "media/fixture.png",
+    "caption": "Fixture image"
+   },
+   {
+    "type": "video",
+    "duration": 0,
+    "src": "media/fixture.mp4"
+   }
   ]
  },
- "reloadToken": "2026-10-19-v5",
+ "reloadToken": "2026-10-19-v6",
  "heartbeatUrl": "",
- "mediaVersion": "5"
+ "mediaVersion": "6"
 }
